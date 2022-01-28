@@ -16,3 +16,4 @@ logs/
 src/main/resources/config/*.conf
 docker-compose.yml
 .bsp
+Test.sc
