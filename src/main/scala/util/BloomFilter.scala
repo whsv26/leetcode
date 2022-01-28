@@ -1,16 +1,17 @@
 package org.whsv26.leetcode
 package util
 
+import java.lang.Math.{floor, log, pow, round}
 import scala.util.Random.nextInt
 
 class BloomFilter(val n: Int, val p: Double) {
   private var bitMap: Int = 0
 
-  private val m = Math.round {
-    -n * Math.log(p) / (Math.pow(Math.log(2), 2))
+  private val m = round {
+    -n * log(p) / (pow(log(2), 2))
   }
 
-  private val k = Math.floor(Math.log(2) * m / n).toInt
+  private val k = floor(log(2) * m / n).toInt
 
   private val salts = LazyList.continually(nextInt).take(k).toList
 
