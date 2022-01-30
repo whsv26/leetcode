@@ -7,16 +7,14 @@ object Solution {
     while (j < nums.length) {
       if (0 == nums(j)) {
         j += 1
+      } else if (0 == nums(i)) {
+        val tmp = nums(j)
+        nums(j) = 0
+        nums(i) = tmp
+        i += 1
       } else {
-        if (0 == nums(i)) {
-          val tmp = nums(j)
-          nums(j) = 0
-          nums(i) = tmp
-          i += 1
-        } else {
-          i += 1
-          j += 1
-        }
+        i += 1
+        j += 1
       }
     }
   }
