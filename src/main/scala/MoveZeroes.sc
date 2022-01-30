@@ -2,44 +2,26 @@
 
 object Solution {
   def moveZeroes(nums: Array[Int]): Unit = {
-    var i = 0
+    var i, j = 0
 
-    while (i < nums.length) {
-      if (nums(i) == 0) {
-        val j = expandZeroes(nums, i)
-        shift(nums, i, j)
+    while (j < nums.length) {
+      if (0 == nums(j)) {
+        j += 1
+      } else {
+        if (0 == nums(i)) {
+          val tmp = nums(j)
+          nums(j) = 0
+          nums(i) = tmp
+          i += 1
+        } else {
+          i += 1
+          j += 1
+        }
       }
-
-      i += 1
     }
-  }
-
-  def expandZeroes(nums: Array[Int], start: Int): Int = {
-    var end = start
-
-    while (end + 1 < nums.length && 0 == nums(end + 1)) {
-      end += 1
-    }
-
-    end
-  }
-
-  def shift(nums: Array[Int], start: Int, end: Int): Unit = {
-    if (end + 1 >= nums.length)
-      return
-
-    val tmp = nums(end + 1)
-
-    (start to end).foreach { i =>
-      nums(i + 1) = 0
-    }
-
-    nums(start) = tmp
   }
 }
 
 val in = Array(0,1,0,3,12)
-
 Solution.moveZeroes(in)
-
 in
