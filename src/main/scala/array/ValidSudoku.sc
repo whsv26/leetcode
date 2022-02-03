@@ -2,7 +2,6 @@
 
 import scala.collection.mutable.{BitSet => MBitSet}
 import scala.collection.mutable.{HashMap => MHashMap}
-import scala.util.control.Breaks.{break, breakable}
 
 object Solution {
   def isValidSudoku(board: Array[Array[Char]]): Boolean = {
@@ -11,40 +10,26 @@ object Solution {
     val cols = MHashMap.empty[Int, MBitSet]
     var res: Boolean = true
 
-    breakable {
-      for {
-        i <- 0 until 9
-        j <- 0 until 9
-        if board(i)(j) != '.'
-      } {
-        val iSet = rows.getOrElseUpdate(i, MBitSet.empty)
-        val jSet = cols.getOrElseUpdate(j, MBitSet.empty)
-        val sqSet = squares.getOrElseUpdate(
-          (i / 3) * 3 + (j / 3),
-          MBitSet.empty
-        )
+    for {
+      i <- 0 until 9
+      j <- 0 until 9
+      if board(i)(j) != '.'
+    } {
+      val iSet = rows.getOrElseUpdate(i, MBitSet.empty)
+      val jSet = cols.getOrElseUpdate(j, MBitSet.empty)
+      val sqSet = squares.getOrElseUpdate(
+        (i / 3) * 3 + (j / 3),
+        MBitSet.empty
+      )
 
-        if (!iSet(board(i)(j))) {
-          iSet.addOne(board(i)(j))
-        } else {
-          res = false
-          break
-        }
+      if (!iSet(board(i)(j))) iSet.addOne(board(i)(j))
+      else return false
 
-        if (!jSet(board(i)(j))) {
-          jSet.addOne(board(i)(j))
-        } else {
-          res = false
-          break
-        }
+      if (!jSet(board(i)(j))) jSet.addOne(board(i)(j))
+      else return false
 
-        if (!sqSet(board(i)(j))) {
-          sqSet.addOne(board(i)(j))
-        } else {
-          res = false
-          break
-        }
-      }
+      if (!sqSet(board(i)(j))) sqSet.addOne(board(i)(j))
+      else return false
     }
 
     res
