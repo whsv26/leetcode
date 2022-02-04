@@ -3,17 +3,17 @@ package string
 
 object ValidPalindrome {
   def main(args: Array[String]): Unit = {
-    println(isPalindrome2("amanaplanacanalpanama"))
-    println(isPalindrome2("A man, a plan, a canal: Panama"))
-    println(isPalindrome2(" "))
-    println(isPalindrome2(".,"))
+    println(isPalindromeV1("amanaplanacanalpanama"))
+    println(isPalindromeV1("A man, a plan, a canal: Panama"))
+    println(isPalindromeV1(" "))
+    println(isPalindromeV1(".,"))
   }
 
   /**
    * Runtime: 484 ms
    * Memory Usage: 53 MB
    */
-  def isPalindrome1(s: String): Boolean = {
+  def isPalindromeV1(s: String): Boolean = {
     val ss = s.filter(_.isLetterOrDigit)
     val len = ss.length
 
@@ -34,7 +34,7 @@ object ValidPalindrome {
    * Runtime: 834 ms
    * Memory Usage: 68.6 MB
    */
-  def isPalindrome2(s: String): Boolean = {
+  def isPalindromeV2(s: String): Boolean = {
     val len = s.length
 
     var i = 0
