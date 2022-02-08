@@ -23,17 +23,37 @@ object ReverseLinkedList {
       return null
     }
 
-    var tmp = head
-    var res = new ListNode(head.x)
-
-    while (tmp.next != null) {
-      val oldTmp = tmp
-      tmp = tmp.next
-      oldTmp.next = null
-
-      res = new ListNode(tmp.x, res)
+    @tailrec def iter(cur: ListNode, res: ListNode): ListNode = {
+      if (cur.next == null) {
+        cur.next = res
+        cur
+      } else {
+        val next = cur.next
+        cur.next = res
+        iter(next, cur)
+      }
     }
 
+    iter(head, null)
+  }
+
+  def reverseList1(head: ListNode): ListNode = {
+    if (head == null) {
+      return null
+    }
+
+    var tmp = head
+    var res: ListNode = null
+
+    while (tmp.next != null) {
+      val oldNext = tmp.next
+      tmp.next = res
+      res = tmp
+      tmp = oldNext
+    }
+
+    tmp.next = res
+    res = tmp
     res
   }
 
