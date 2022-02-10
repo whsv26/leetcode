@@ -11,18 +11,15 @@ object MergeSortedArray {
 
   def merge(nums1: Array[Int], m: Int, nums2: Array[Int], n: Int): Unit = {
     var i, j = 0
-    var cap = nums1.length - m
 
     while (j < n) {
-      if (i == nums1.length - cap) {
+      if (i == nums1.length - (nums1.length - m - j)) {
         nums1(i) = nums2(j)
         j += 1
-        cap -= 1
       } else if (nums1(i) >= nums2(j)) {
-        shiftRight(nums1, i, cap)
+        shiftRight(nums1, i, (nums1.length - m - j))
         nums1(i) = nums2(j)
         j += 1
-        cap -= 1
       }
 
       i += 1
