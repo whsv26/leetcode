@@ -19,39 +19,21 @@ object MergeTwoSortedLists {
       return list1
     }
 
-    var n1 = list1
-    var n2 = list2
-
-    mergeOne(n1, n2) match {
-      case (lhs, rhs) => {
-        n1 = lhs
-        n2 = rhs
-      }
-    }
-
-    while (n2 != null && n2.next != null) {
-      mergeOne(n1, n2) match {
-        case (lhs, rhs) => {
-          n1 = lhs
-          n2 = rhs
+    @tailrec def iter(n1: ListNode, n2: ListNode): Unit = {
+      if (n2.next != null) {
+        mergeOne(n1, n2) match {
+          case (lhs, rhs) => iter(lhs, rhs)
         }
+      } else if (n2.next == null) {
+        mergeOne(n1, n2)
       }
     }
 
-    mergeOne(n1, n2) match {
-      case (lhs, rhs) => {
-        n1 = lhs
-        n2 = rhs
-      }
-    }
+    iter(list1, list2)
 
     list1
   }
 
-  /**
-   * Find node to append and append to this node
-   * If no node to append found then prepend to first node
-   */
   def mergeOne(ln1: ListNode, ln2: ListNode): (ListNode, ListNode) = {
     if (ln2 == null) {
       return (ln1, ln2)
@@ -70,13 +52,16 @@ object MergeTwoSortedLists {
       ln1.x = ln2.x
       ln1.next = ln1Copy
       (ln1, ln2.next)
+    } else if (i.next == null) {
+      val ln2Next = ln2.next
+      ln2.next = null
+      i.next = ln2
+      (i, ln2Next)
     } else {
       val ln1Next = i.next
       val ln2Next = ln2.next
-
       i.next = ln2
       ln2.next = ln1Next
-
       (ln1Next, ln2Next)
     }
   }
