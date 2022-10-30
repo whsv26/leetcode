@@ -42,23 +42,18 @@ object ReverseLinkedList {
       return null
     }
 
-    var tmp = head
+    var cur = head
     var res: ListNode = null
 
-    while (tmp.next != null) {
-      val oldNext = tmp.next
-      tmp.next = res
-      res = tmp
-      tmp = oldNext
+    while (cur.next != null) {
+      val tmpNext = cur.next
+      cur.next = res
+      res = cur
+      cur = tmpNext
     }
 
-    tmp.next = res
-    res = tmp
+    cur.next = res
+    res = cur
     res
-  }
-
-  class ListNode(_x: Int = 0, _next: ListNode = null) {
-    var next: ListNode = _next
-    var x: Int = _x
   }
 }
