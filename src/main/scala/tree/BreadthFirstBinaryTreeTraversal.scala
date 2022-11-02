@@ -42,10 +42,8 @@ object BreadthFirstBinaryTreeTraversal {
     while (queue.nonEmpty) {
       val node = queue.dequeue()
 
-      if (node.left != null)
-        queue.enqueue(node.left)
-      if (node.right != null)
-        queue.enqueue(node.right)
+      if (node.left != null) queue.enqueue(node.left)
+      if (node.right != null) queue.enqueue(node.right)
 
       f(node)
     }
