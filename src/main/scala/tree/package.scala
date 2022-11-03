@@ -13,16 +13,10 @@ package object tree {
   implicit def toNode(n: Int): TreeNode =
     new TreeNode(n)
 
-  def mkTree(nodes: TreeNode*): TreeNode = {
-    val parents = nodes.filter(_ != null)
-    val children = nodes.drop(1).grouped(2)
-
-    parents.zip(children).tapEach {
-      case (parent, Seq(left, right)) =>
-        parent.left = left
-        parent.right = right
+  def mkTree(nodes: TreeNode*): TreeNode =
+    deserialize {
+      nodes
+        .map(n => if (n == null) "null" else n.value.toString)
+        .mkString("[", ",", "]")
     }
-
-    parents.head
-  }
 }
