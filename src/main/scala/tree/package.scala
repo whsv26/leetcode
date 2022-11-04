@@ -16,7 +16,10 @@ package object tree {
   def mkTree(nodes: TreeNode*): TreeNode =
     deserialize {
       nodes
-        .map(n => if (n == null) "null" else n.value.toString)
+        .map {
+          case null => "null"
+          case n => n.value.toString
+        }
         .mkString("[", ",", "]")
     }
 }
