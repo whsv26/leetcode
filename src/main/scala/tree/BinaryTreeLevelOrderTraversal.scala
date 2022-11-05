@@ -3,17 +3,6 @@ package tree
 
 import scala.collection.mutable
 
-/**
- * [1,2,3,4,null,null,5,6,null,null,7]
- *
- *         1
- *        / \
- *       2   3
- *      /     \
- *     4       5
- *    /         \
- *   6           7
- */
 object BinaryTreeLevelOrderTraversal {
 
   def main(args: Array[String]): Unit = {
@@ -27,43 +16,24 @@ object BinaryTreeLevelOrderTraversal {
       return Nil
 
     val queue = mutable.Queue(root)
-    var res: List[List[Int]] = Nil
-    var levelRes: List[Int] = Nil
-    val ends = levelEnds(root)
+    var levels: List[List[Int]] = Nil
 
     while (queue.nonEmpty) {
-      val node = queue.dequeue()
+      val nodes = queue.dequeueAll(_ => true)
+      val level =
+        nodes.foldLeft(List.empty[Int]) { (acc, node) =>
+          if (node.left != null)
+            queue.enqueue(node.left)
 
-      if (ends(node)) {
-        res = (node.value :: levelRes).reverse :: res
-        levelRes = Nil
-      } else {
-        levelRes = node.value :: levelRes
-      }
+          if (node.right != null)
+            queue.enqueue(node.right)
 
-      if (node.left != null)
-        queue.enqueue(node.left)
+          node.value :: acc
+        }
 
-      if (node.right != null)
-        queue.enqueue(node.right)
+      levels = level.reverse :: levels
     }
 
-    res.reverse
-  }
-
-  def levelEnds(root: TreeNode): Set[TreeNode] = {
-    val map = mutable.Map.empty[Int, TreeNode]
-
-    def iter(node: TreeNode, level: Int): Unit = {
-      if (node != null) {
-        map.update(level, node)
-
-        iter(node.left, level + 1)
-        iter(node.right, level + 1)
-      }
-    }
-
-    iter(root, 0)
-    map.values.toSet
+    levels.reverse
   }
 }
