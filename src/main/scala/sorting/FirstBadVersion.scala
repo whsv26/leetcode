@@ -4,29 +4,32 @@ package sorting
 object FirstBadVersion {
 
   def main(args: Array[String]): Unit = {
-    println(firstBadVersion(5))
+    println(firstBadVersion(2_000_000_000))
   }
 
   def isBadVersion(version: Int): Boolean =
-    version >= 4
+    version >= 1_000_000_000
 
   def firstBadVersion(n: Int): Int = {
-    def iter(i: Int, j: Int): Int = {
+    def iter(i: Int, j: Int, prevBad: Option[Int]): Int = {
       val mid = i + (j - i) / 2
 
-      if (i <= j)
+      if (i <= j) {
         if (isBadVersion(mid)) {
-          val left = iter(i, mid - 1)
-          if (left == 0) mid else left
+          val bad = iter(i, mid - 1, Some(mid))
+          if (bad > 0) bad else mid
+        } else if (prevBad.isDefined) {
+          val bad = iter(mid + 1, j, prevBad)
+          if (bad > 0) bad else prevBad.get
         } else {
-          val left = iter(i, mid - 1)
-          val right = iter(mid + 1, j)
-          if (left == 0) right else left
+          val bad = iter(mid + 1, j, prevBad)
+          if (bad > 0) bad else iter(i, mid - 1, prevBad)
         }
-      else
+      } else {
         0
+      }
     }
 
-    iter(1, n)
+    iter(1, n, None)
   }
 }
