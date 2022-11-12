@@ -6,7 +6,7 @@ object Solution {
 
     for {
       i <- 1 until prices.length
-      if (prices(i) > prices(i - 1))
+      if prices(i) > prices(i - 1)
     } sum += prices(i) - prices(i - 1)
 
     sum
