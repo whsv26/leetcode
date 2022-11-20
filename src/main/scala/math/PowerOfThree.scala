@@ -16,7 +16,7 @@ object PowerOfThree {
     if (n == 0)
       return false
 
-    val pow = (log(n) / log(3)).ceil.toInt
+    val pow = (log(n) / log(3)).ceil
 
     Math.pow(3, pow) == n
   }
