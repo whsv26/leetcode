@@ -17,6 +17,23 @@ object NumberOfOneBits {
     }
 
     while (rest != 0) {
+      rest &= rest - 1
+      weight += 1
+    }
+
+    weight
+  }
+
+  def hammingWeightSlow(n: Int): Int = {
+    var rest = n
+    var weight = 0
+
+    if (rest < 0) {
+      rest ^= Int.MinValue
+      weight += 1
+    }
+
+    while (rest != 0) {
       weight += rest & 1
       rest >>= 1
     }
