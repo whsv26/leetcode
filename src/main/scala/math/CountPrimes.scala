@@ -27,8 +27,7 @@ object CountPrimes {
       }
     }
 
-    val res = primes.count(identity)
-    res
+    primes.count(identity)
   }
 
   def mark(n: Int, arr: Array[Boolean]): Unit = {
