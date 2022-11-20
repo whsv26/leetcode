@@ -17,7 +17,7 @@ object NumberOfOneBits {
     }
 
     while (rest != 0) {
-      rest &= rest - 1
+      rest &= rest - 1 // remove rightmost 1 bit
       weight += 1
     }
 
