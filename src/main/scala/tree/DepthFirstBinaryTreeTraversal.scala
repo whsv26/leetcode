@@ -13,10 +13,24 @@ import scala.collection.mutable
 object DepthFirstBinaryTreeTraversal {
 
   def main(args: Array[String]): Unit = {
-    depthFirstTraverse(mkTree(1,2,5,3,4,6,7))(n => println(n.value))
+    depthFirstTraverseImmutable(mkTree(1,2,5,3,4,6,7))
+      .tapEach(println)
   }
 
-  def depthFirstTraverse(root: TreeNode)(f: TreeNode => Unit): Unit = {
+  def depthFirstTraverseImmutable(root: TreeNode): List[Int] =
+    List
+      .unfold(List(root)) {
+        case Nil => None
+        case head :: tail =>
+          val stack =
+            List(Option(head.right), Option(head.left))
+              .flatten
+              .foldLeft(tail) { case (acc, cur) => cur :: acc }
+
+          Some(head.value, stack)
+      }
+
+  def depthFirstTraverseMutable(root: TreeNode)(f: TreeNode => Unit): Unit = {
     val stack = mutable.Stack(root)
 
     while (stack.nonEmpty) {
