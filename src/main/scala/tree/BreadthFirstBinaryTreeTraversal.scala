@@ -1,6 +1,7 @@
 package org.whsv26.leetcode
 package tree
 
+import scala.collection.immutable.Queue
 import scala.collection.mutable
 
 /**
@@ -17,10 +18,25 @@ import scala.collection.mutable
 object BreadthFirstBinaryTreeTraversal {
 
   def main(args: Array[String]): Unit = {
-    breadthFirstTraverse(mkTree(1,2,3,4,null,null,5,6,null,null,7))(n => println(n.value))
+    breadthFirstTraverseImmutable(mkTree(1, 2, 3, 4, null, null, 5, 6, null, null, 7))
+      .tapEach(println)
   }
 
-  def breadthFirstTraverse(root: TreeNode)(f: TreeNode => Unit): Unit = {
+  def breadthFirstTraverseImmutable(root: TreeNode): List[Int] =
+    List
+      .unfold(Queue(root)) {
+        case queue if queue.isEmpty => None
+        case oldQueue =>
+          val (head, tail) = oldQueue.dequeue
+          val newQueue =
+            List(Option(head.left), Option(head.right))
+              .flatten
+              .foldLeft(tail) { case (acc, cur) => acc.enqueue(cur) }
+
+          Some(head.value, newQueue)
+      }
+
+  def breadthFirstTraverseMutable(root: TreeNode)(f: TreeNode => Unit): Unit = {
 
     val queue = mutable.Queue(root)
 

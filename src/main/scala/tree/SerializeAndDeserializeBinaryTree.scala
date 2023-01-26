@@ -1,18 +1,18 @@
 package org.whsv26.leetcode
 package tree
 
-import tree.BreadthFirstBinaryTreeTraversal.breadthFirstTraverse
+import tree.BreadthFirstBinaryTreeTraversal.breadthFirstTraverseMutable
 import scala.collection.mutable
 
 object SerializeAndDeserializeBinaryTree {
   def main(args: Array[String]): Unit = {
     println(serialize(mkTree(1,2,3,4,null,null,5,6,null,null,7)))
-    breadthFirstTraverse(deserialize("[1,2,3,4,null,null,5,6,null,null,7]"))(n => println(n.value))
+    breadthFirstTraverseMutable(deserialize("[1,2,3,4,null,null,5,6,null,null,7]"))(n => println(n.value))
 
     println
 
     println(serialize(mkTree(1,2,3,null,null,4,5)))
-    breadthFirstTraverse(deserialize("[1,2,3,null,null,4,5]"))(n => println(n.value))
+    breadthFirstTraverseMutable(deserialize("[1,2,3,null,null,4,5]"))(n => println(n.value))
   }
 
   def deserialize(data: String): TreeNode = {
