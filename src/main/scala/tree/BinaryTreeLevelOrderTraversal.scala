@@ -8,9 +8,9 @@ object BinaryTreeLevelOrderTraversal {
 
   def main(args: Array[String]): Unit = {
     println(levelOrderImmutable(null)) // []
-    println(levelOrderImmutable(mkTree(1,2,null,3,null,4,null,5))) // [[1],[2],[3],[4],[5]]
-    println(levelOrderImmutable(mkTree(1,2,null,3,null,4,null,5))) // [[1],[2],[3],[4],[5]]
-    println(levelOrderImmutable(mkTree(1,2,3,4,5))) // [[1],[2,3],[4,5]]
+    println(levelOrderImmutable(mkTree(3, 9, 20, null, null, 15, 7))) // [[3],[9,20],[15,7]]
+    println(levelOrderImmutable(mkTree(1, 2, null, 3, null, 4, null, 5))) // [[1],[2],[3],[4],[5]]
+    println(levelOrderImmutable(mkTree(1, 2, 3, 4, 5))) // [[1],[2,3],[4,5]]
   }
 
   def levelOrderImmutable(root: TreeNode): List[List[Int]] =
@@ -18,11 +18,11 @@ object BinaryTreeLevelOrderTraversal {
       case queue if queue.isEmpty => None
       case queue =>
         val currentLevel = queue.toList.map(_.value)
-        val nextLevel = queue.foldLeft(Queue.empty[TreeNode]) {
-          case (acc, cur) =>
-            List(Option(cur.left), Option(cur.right))
-              .flatten
-              .foldLeft(acc)(_ enqueue _)
+        val nextLevel = queue.flatMap { elem =>
+          List(
+            Option(elem.left),
+            Option(elem.right)
+          ).flatten
         }
 
         Some(currentLevel, nextLevel)
