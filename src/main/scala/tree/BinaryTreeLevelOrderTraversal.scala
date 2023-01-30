@@ -7,16 +7,14 @@ import scala.collection.mutable
 object BinaryTreeLevelOrderTraversal {
 
   def main(args: Array[String]): Unit = {
-    println(levelOrderImmutable(mkTree(3,9,20,null,null,15,7))) // [[3],[9,20],[15,7]]
+    println(levelOrderImmutable(null)) // []
+    println(levelOrderImmutable(mkTree(1,2,null,3,null,4,null,5))) // [[1],[2],[3],[4],[5]]
     println(levelOrderImmutable(mkTree(1,2,null,3,null,4,null,5))) // [[1],[2],[3],[4],[5]]
     println(levelOrderImmutable(mkTree(1,2,3,4,5))) // [[1],[2,3],[4,5]]
   }
 
-  def levelOrderImmutable(root: TreeNode): List[List[Int]] = {
-    if (root == null)
-      return Nil
-
-    List.unfold(Queue(root)) {
+  def levelOrderImmutable(root: TreeNode): List[List[Int]] =
+    List.unfold(Queue.from(Option(root))) {
       case queue if queue.isEmpty => None
       case queue =>
         val currentLevel = queue.toList.map(_.value)
@@ -29,7 +27,6 @@ object BinaryTreeLevelOrderTraversal {
 
         Some(currentLevel, nextLevel)
     }
-  }
 
   def levelOrderMutable(root: TreeNode): List[List[Int]] = {
     if (root == null)
