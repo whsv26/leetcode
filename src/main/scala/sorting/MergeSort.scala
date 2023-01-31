@@ -11,16 +11,16 @@ object MergeSort {
   }
 
   def mergeSort(in: List[Int]): List[Int] = {
-    def loop(list: List[Int]): Eval[List[Int]] =
+    def sort(list: List[Int]): Eval[List[Int]] =
       list match {
         case Nil => Eval.now(Nil)
         case head :: Nil => Eval.now(List(head))
         case _ =>
           val (xs, ys) = list.splitAt(list.length / 2)
-          (loop(xs), loop(ys)).flatMapN(mergeT)
+          (sort(xs), sort(ys)).flatMapN(mergeT)
       }
 
-    loop(in).value
+    sort(in).value
   }
 
   // stack safe
