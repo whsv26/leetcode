@@ -1,9 +1,4 @@
-package main
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+package golang
 
 func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	aLength := count(headA)
