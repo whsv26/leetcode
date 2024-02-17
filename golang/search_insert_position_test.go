@@ -19,10 +19,17 @@ func Test_searchInsert(t *testing.T) {
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Example %v", i+1), func(t *testing.T) {
-			actual := searchInsert(test.Nums, test.Target)
-			if actual != test.Expected {
-				t.Errorf("Expected %v, got %v", test.Expected, actual)
+			results := []int{
+				searchInsert(test.Nums, test.Target),
+				searchInsertRecursive(test.Nums, test.Target),
 			}
+
+			for _, result := range results {
+				if result != test.Expected {
+					t.Errorf("Expected %v, got %v", test.Expected, result)
+				}
+			}
+
 		})
 	}
 }
