@@ -1,6 +1,6 @@
 package golang
 
-func makeListNode(xxs ...[]int) (res *ListNode) {
+func MakeListNode(xxs ...[]int) (res *ListNode) {
 	tmp := &ListNode{}
 	res = tmp
 
@@ -14,7 +14,7 @@ func makeListNode(xxs ...[]int) (res *ListNode) {
 	return res.Next
 }
 
-func joinListNodes(lhs *ListNode, rhs *ListNode) *ListNode {
+func JoinListNodes(lhs *ListNode, rhs *ListNode) *ListNode {
 	if lhs == nil {
 		return rhs
 	}
@@ -28,4 +28,26 @@ func joinListNodes(lhs *ListNode, rhs *ListNode) *ListNode {
 	lhs.Next = rhs
 
 	return res
+}
+
+func Map[A any, B any](xs []A, f func(A) B) []B {
+	bs := make([]B, len(xs))
+
+	for i := range xs {
+		bs[i] = f(xs[i])
+	}
+
+	return bs
+}
+
+func Filter[A any](xs []A, f func(A) bool) []A {
+	bs := make([]A, 0, len(xs))
+
+	for _, x := range xs {
+		if f(x) {
+			bs = append(bs, x)
+		}
+	}
+
+	return bs
 }
