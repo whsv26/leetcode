@@ -22,26 +22,35 @@ func (this *Codec) serialize(root *TreeNode) string {
 
 	for len(currentLevel) > 0 {
 		nextLevel := make([]*TreeNode, 0, len(currentLevel))
-		isEmptyLevel := true
+		isLastLevel := true
+		lastNodeIdx := -1
 
 		for i, cur := range currentLevel {
-			val := "null"
-
 			if cur != nil {
-				isEmptyLevel = isEmptyLevel && (cur.Left == nil || cur.Right == nil)
+				isLastLevel = isLastLevel && cur.Left == nil && cur.Right == nil
 				nextLevel = append(nextLevel, cur.Left)
 				nextLevel = append(nextLevel, cur.Right)
-				val = fmt.Sprintf("%v", cur.Val)
+				lastNodeIdx = i
+			}
+		}
+
+		if isLastLevel {
+			currentLevel = currentLevel[:lastNodeIdx+1]
+		}
+
+		for i, cur := range currentLevel {
+			if cur == nil {
+				builder.WriteString("null")
+			} else {
+				builder.WriteString(fmt.Sprintf("%v", cur.Val))
 			}
 
-			builder.WriteString(val)
-
-			if i < len(currentLevel)-1 || !isEmptyLevel {
+			if i < len(currentLevel)-1 || !isLastLevel {
 				builder.WriteString(",")
 			}
 		}
 
-		if !isEmptyLevel {
+		if !isLastLevel {
 			currentLevel = nextLevel
 		} else {
 			currentLevel = nil
@@ -62,18 +71,19 @@ func (this *Codec) deserialize(data string) *TreeNode {
 	}
 
 	stringNodes := strings.Split(data, ",")
+	nodes := make([]*TreeNode, len(stringNodes))
 
-	nodes := Map(stringNodes, func(node string) *TreeNode {
+	for i, node := range stringNodes {
 		if node == "null" {
-			return nil
+			nodes[i] = nil
 		} else {
 			val, err := strconv.Atoi(node)
 			if err != nil {
-				return nil
+				nodes[i] = nil
 			}
-			return &TreeNode{Val: val}
+			nodes[i] = &TreeNode{Val: val}
 		}
-	})
+	}
 
 	for i, j := 0, 1; i < len(nodes); {
 		if nodes[i] == nil {

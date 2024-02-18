@@ -1,22 +1,27 @@
 package golang
 
-import "testing"
-
-/**
- * Your Codec object will be instantiated and called as such:
- * ser := Constructor();
- * deser := Constructor();
- * data := ser.serialize(root);
- * ans := deser.deserialize(data);
- */
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_deserialize(t *testing.T) {
-	data := "[1,2,3,null,null,4,5]"
-	deserializer := Constructor()
-	serializer := Constructor()
-	result := serializer.serialize(deserializer.deserialize(data))
+	tests := []string{
+		"[1,2,3,null,null,4,5]",
+		"[1,2]",
+	}
 
-	if data != result {
-		t.Error()
+	for i, test := range tests {
+		t.Run(fmt.Sprintf("Example %v", i+1), func(t *testing.T) {
+			deserializer := Constructor()
+			serializer := Constructor()
+			deserialized := deserializer.deserialize(test)
+			result := serializer.serialize(deserialized)
+
+			if result != test {
+				t.Errorf("Expected %v, got %v", test, result)
+			}
+
+		})
 	}
 }
