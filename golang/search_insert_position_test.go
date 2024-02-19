@@ -6,7 +6,6 @@ import (
 )
 
 func Test_searchInsert(t *testing.T) {
-
 	tests := []struct {
 		Nums     []int
 		Target   int

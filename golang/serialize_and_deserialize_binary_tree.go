@@ -66,42 +66,50 @@ func (this *Codec) serialize(root *TreeNode) string {
 func (this *Codec) deserialize(data string) *TreeNode {
 	data = strings.Trim(data, "[]")
 
-	if len(data) == 0 {
-		return nil
+	parse := func(node string) *TreeNode {
+		val, err := strconv.Atoi(node)
+		if err != nil {
+			return nil
+		}
+		return &TreeNode{Val: val}
 	}
 
-	stringNodes := strings.Split(data, ",")
-	nodes := make([]*TreeNode, len(stringNodes))
-
-	for i, node := range stringNodes {
-		if node == "null" {
-			nodes[i] = nil
+	next := func() *TreeNode {
+		var node string
+		if comma := strings.IndexRune(data, ','); comma != -1 {
+			node = data[:comma]
+			data = data[comma+1:]
 		} else {
-			val, err := strconv.Atoi(node)
-			if err != nil {
-				nodes[i] = nil
+			node = data
+			data = ""
+		}
+
+		return parse(node)
+	}
+
+	var parents []*TreeNode
+	root := next()
+
+	if root != nil {
+		parents = append(parents, root)
+	}
+
+	for len(parents) > 0 {
+		var children []*TreeNode
+		for _, parent := range parents {
+			if left := next(); left != nil {
+				parent.Left = left
+				children = append(children, left)
 			}
-			nodes[i] = &TreeNode{Val: val}
+
+			if right := next(); right != nil {
+				parent.Right = right
+				children = append(children, right)
+			}
 		}
+
+		parents = children
 	}
 
-	for i, j := 0, 1; i < len(nodes); {
-		if nodes[i] == nil {
-			i++
-			continue
-		}
-
-		node := nodes[i]
-
-		if j < len(nodes) {
-			node.Left = nodes[j]
-		}
-		if j+1 < len(nodes) {
-			node.Right = nodes[j+1]
-		}
-		i++
-		j += 2
-	}
-
-	return nodes[0]
+	return root
 }
