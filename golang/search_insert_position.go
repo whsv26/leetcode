@@ -19,21 +19,23 @@ func searchInsert(nums []int, target int) int {
 }
 
 func searchInsertRecursive(nums []int, target int) int {
-	return searchInsertRecursiveLoop(nums, target, 0, len(nums))
-}
+	var loop func(nums []int, target, l, r int) int
 
-func searchInsertRecursiveLoop(nums []int, target, from, to int) (insertIdx int) {
-	if to == from {
-		return from
+	loop = func(nums []int, target, l, r int) (insertIdx int) {
+		if r == l {
+			return l
+		}
+
+		mid := (r-l)/2 + l
+
+		if target > nums[mid] {
+			return loop(nums, target, mid+1, r)
+		} else if target < nums[mid] {
+			return loop(nums, target, l, mid)
+		} else {
+			return mid
+		}
 	}
 
-	mid := (to-from)/2 + from
-
-	if target > nums[mid] {
-		return searchInsertRecursiveLoop(nums, target, mid+1, to)
-	} else if target < nums[mid] {
-		return searchInsertRecursiveLoop(nums, target, from, mid)
-	} else {
-		return mid
-	}
+	return loop(nums, target, 0, len(nums))
 }
