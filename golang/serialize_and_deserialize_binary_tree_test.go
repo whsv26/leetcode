@@ -7,8 +7,8 @@ import (
 
 func Test_deserialize(t *testing.T) {
 	tests := []string{
-		"[1,2,3,null,null,4,5]",
-		"[1,2]",
+		"1,2,3,null,null,4,5",
+		"1,2",
 	}
 
 	for i, test := range tests {

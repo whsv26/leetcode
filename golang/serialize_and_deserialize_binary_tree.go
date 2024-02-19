@@ -14,6 +14,31 @@ func Constructor() Codec {
 
 // Serializes a tree to a single string.
 func (this *Codec) serialize(root *TreeNode) string {
+	queue := []*TreeNode{root}
+
+	var builder strings.Builder
+	length := builder.Len()
+
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+
+		if node == nil {
+			builder.WriteString("null")
+		} else {
+			queue = append(queue, node.Left)
+			queue = append(queue, node.Right)
+			builder.WriteString(fmt.Sprintf("%v", node.Val))
+			length = builder.Len()
+		}
+
+		builder.WriteString(",")
+	}
+
+	return builder.String()[0:length]
+}
+
+func (this *Codec) serialize1(root *TreeNode) string {
 	currentLevel := []*TreeNode{root}
 
 	var builder strings.Builder
@@ -64,8 +89,6 @@ func (this *Codec) serialize(root *TreeNode) string {
 
 // Deserializes your encoded data to tree.
 func (this *Codec) deserialize(data string) *TreeNode {
-	data = strings.Trim(data, "[]")
-
 	parse := func(node string) *TreeNode {
 		val, err := strconv.Atoi(node)
 		if err != nil {
