@@ -38,55 +38,6 @@ func (this *Codec) serialize(root *TreeNode) string {
 	return builder.String()[0:length]
 }
 
-func (this *Codec) serialize1(root *TreeNode) string {
-	currentLevel := []*TreeNode{root}
-
-	var builder strings.Builder
-
-	builder.WriteString("[")
-
-	for len(currentLevel) > 0 {
-		nextLevel := make([]*TreeNode, 0, len(currentLevel))
-		isLastLevel := true
-		lastNodeIdx := -1
-
-		for i, cur := range currentLevel {
-			if cur != nil {
-				isLastLevel = isLastLevel && cur.Left == nil && cur.Right == nil
-				nextLevel = append(nextLevel, cur.Left)
-				nextLevel = append(nextLevel, cur.Right)
-				lastNodeIdx = i
-			}
-		}
-
-		if isLastLevel {
-			currentLevel = currentLevel[:lastNodeIdx+1]
-		}
-
-		for i, cur := range currentLevel {
-			if cur == nil {
-				builder.WriteString("null")
-			} else {
-				builder.WriteString(fmt.Sprintf("%v", cur.Val))
-			}
-
-			if i < len(currentLevel)-1 || !isLastLevel {
-				builder.WriteString(",")
-			}
-		}
-
-		if !isLastLevel {
-			currentLevel = nextLevel
-		} else {
-			currentLevel = nil
-		}
-	}
-
-	builder.WriteString("]")
-
-	return builder.String()
-}
-
 // Deserializes your encoded data to tree.
 func (this *Codec) deserialize(data string) *TreeNode {
 	parse := func(node string) *TreeNode {
