@@ -1,48 +1,45 @@
 package golang
 
-import "slices"
+type Point struct {
+	Node   *TreeNode
+	Length int
+}
 
 func diameterOfBinaryTree(root *TreeNode) int {
-	var loop func(*TreeNode) [][]*TreeNode
+	var loop func(*TreeNode) []*Point
 
-	loop = func(node *TreeNode) [][]*TreeNode {
+	loop = func(node *TreeNode) []*Point {
 		if node == nil {
-			return [][]*TreeNode{{}}
+			return []*Point{{nil, 0}}
 		}
 
 		lss := loop(node.Left)
-		lssGrown := slices.Clone(lss)
-		for i := range lssGrown {
-			if len(lssGrown[i]) == 0 || lssGrown[i][len(lssGrown[i])-1] == node.Left {
-				lssGrown[i] = append(lssGrown[i], node)
+		for _, ls := range lss {
+			if ls.Length == 0 || ls.Node == node.Left {
+				ls.Node = node
+				ls.Length++
 			}
 		}
 
 		rss := loop(node.Right)
-		rssGrown := slices.Clone(rss)
-		for i := range rss {
-			if len(rssGrown[i]) == 0 || rssGrown[i][len(rssGrown[i])-1] == node.Right {
-				rssGrown[i] = append(rssGrown[i], node)
+		for _, rs := range rss {
+			if rs.Length == 0 || rs.Node == node.Right {
+				rs.Node = node
+				rs.Length++
 			}
 		}
 
-		var merged [][]*TreeNode
+		var merged []*Point
 
-		for i := range lssGrown {
-			for j := range rssGrown {
-				ls := lssGrown[i]
-				rs := rssGrown[j]
-
-				if len(ls) > 0 && len(rs) > 0 && ls[len(ls)-1] == rs[len(rs)-1] {
-					var m []*TreeNode
-					m = append(m, ls...)
-					m = append(m, rs[:len(rs)-1]...)
-					merged = append(merged, m)
+		for _, ls := range lss {
+			for _, rs := range rss {
+				if ls.Node == rs.Node {
+					merged = append(merged, &Point{nil, ls.Length + rs.Length - 1})
 				}
 			}
 		}
 
-		all := append(lssGrown, rssGrown...)
+		all := append(lss, rss...)
 		all = append(all, merged...)
 		return all
 	}
@@ -52,8 +49,8 @@ func diameterOfBinaryTree(root *TreeNode) int {
 	res := loop(root)
 
 	for i := range res {
-		if len(res[i]) > diameter {
-			diameter = len(res[i])
+		if res[i].Length > diameter {
+			diameter = res[i].Length
 		}
 	}
 
