@@ -3,25 +3,26 @@ package golang
 import "slices"
 
 func combinations(nums []int, k int) [][]int {
-	var loop func([]int, int) [][]int
+	var loop func([]int, int)
 
-	loop = func(combination []int, start int) [][]int {
+	var results [][]int
+
+	loop = func(combination []int, start int) {
 		if len(combination) == k {
-			return [][]int{combination}
+			results = append(results, combination)
+			return
 		}
 
-		var res [][]int
 		requested := k - len(combination)
 		available := func(i int) int {
 			return len(nums) - i
 		}
-		for i := start; i < len(nums) && available(i) >= requested; i++ {
+		for i := start; i < len(nums) && requested <= available(i); i++ {
 			nextCombination := append(slices.Clone(combination), nums[i])
-			res = append(res, loop(nextCombination, i+1)...)
+			loop(nextCombination, i+1)
 		}
-
-		return res
 	}
 
-	return loop(nil, 0)
+	loop(nil, 0)
+	return results
 }
