@@ -1,5 +1,6 @@
 package golang
 
+// left, current, right
 func inorderTraversal(root *TreeNode) []int {
 	var res []int
 	var stack []*TreeNode
