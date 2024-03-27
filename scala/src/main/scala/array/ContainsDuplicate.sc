@@ -1,9 +1,5 @@
 // https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/578/
 
-/**
- * Runtime: 1605 ms
- * Memory Usage: 92.6 MB
- */
 object Solution1 {
   def containsDuplicate(nums: Array[Int]): Boolean = {
     if (nums.length < 2) {
@@ -12,24 +8,15 @@ object Solution1 {
 
     nums.sortInPlace()
 
-    (1 until nums.length).iterator.exists { i =>
-      nums(i - 1) == nums(i)
+    nums.iterator.drop(1).zip(nums.iterator).exists {
+      case (curr, prev) => curr == prev
     }
   }
 }
 
-/**
- * Runtime: 1242 ms
- * Memory Usage: 90.9 MB
- */
 object Solution2 {
   def containsDuplicate(nums: Array[Int]): Boolean = {
-    if (nums.length < 2) {
-      return false
-    }
-
     val set = collection.mutable.HashSet.empty[Int]
-
     nums.exists { num =>
       val present = set(num)
       set.add(num)
@@ -38,4 +25,12 @@ object Solution2 {
   }
 }
 
-Solution2.containsDuplicate(Array(3, 1, 2, 3, 4))
+object Solution3 {
+  def containsDuplicate(nums: Array[Int]): Boolean =
+    nums.iterator
+      .scanLeft(Set.empty[Int])((set, num) => set.incl(num))
+      .zip(nums.iterator)
+      .exists { case (set, num) => set(num) }
+}
+
+Solution3.containsDuplicate(Array(3, 1, 2, 3, 4))
