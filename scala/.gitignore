@@ -2,4 +2,3 @@ target/
 .bsp
 .idea
 *.iml
-*.sc
