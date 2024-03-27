@@ -1,20 +1,15 @@
 // https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/546/
 
 object Solution {
-  case class Extremum(minOdd: Int, minEven: Int, maxOdd: Int, maxEven: Int)
-
   def twoSum(nums: Array[Int], target: Int): Array[Int] = {
-    val map = collection.mutable.HashMap.empty[Int, Int]
-
-    for (i <- nums.indices) {
-      map.update(target - nums(i), i)
+    val map = nums.indices.foldLeft(Map.empty[Int, Int]) {
+      (acc, i) => acc.updated(target - nums(i), i)
     }
 
-    val idx = nums.indices.find { i =>
-      map.getOrElse(nums(i), i) != i
-    }.get
-
-    Array(idx, map(nums(idx)))
+    nums.indices
+      .find(i => map.getOrElse(nums(i), i) != i)
+      .map(i => Array(i, map(nums(i))))
+      .get
   }
 }
 
