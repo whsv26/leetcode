@@ -2,12 +2,7 @@
 
 object Solution1 {
   def containsDuplicate(nums: Array[Int]): Boolean = {
-    if (nums.length < 2) {
-      return false
-    }
-
     nums.sortInPlace()
-
     nums.iterator.drop(1).zip(nums.iterator).exists {
       case (curr, prev) => curr == prev
     }
