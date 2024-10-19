@@ -8,7 +8,6 @@ object Solution {
     val squares = MHashMap.empty[Int, MBitSet]
     val rows = MHashMap.empty[Int, MBitSet]
     val cols = MHashMap.empty[Int, MBitSet]
-    var res: Boolean = true
 
     for {
       i <- 0 until 9
@@ -32,7 +31,7 @@ object Solution {
       else return false
     }
 
-    res
+    true
   }
 }
 
