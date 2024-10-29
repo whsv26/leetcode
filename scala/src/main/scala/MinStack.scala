@@ -1,5 +1,4 @@
 package org.whsv26.leetcode
-package design
 
 import java.lang.Math.min
 

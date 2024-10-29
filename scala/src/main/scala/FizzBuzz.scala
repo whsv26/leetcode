@@ -1,5 +1,4 @@
 package org.whsv26.leetcode
-package math
 
 import scala.collection.mutable.ListBuffer
 

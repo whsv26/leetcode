@@ -1,7 +1,4 @@
 package org.whsv26.leetcode
-package others
-
-import others.NumberOfOneBits.hammingWeight
 
 object HammingDistance {
 
