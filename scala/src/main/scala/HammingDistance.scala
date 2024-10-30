@@ -8,4 +8,21 @@ object HammingDistance {
 
   def hammingDistance(x: Int, y: Int): Int =
     hammingWeight(x ^ y)
+
+  def hammingWeight(n: Int): Int = {
+    var rest = n
+    var weight = 0
+
+    if (rest < 0) {
+      rest ^= Int.MinValue
+      weight += 1
+    }
+
+    while (rest != 0) {
+      rest &= rest - 1 // remove rightmost 1 bit
+      weight += 1
+    }
+
+    weight
+  }
 }
