@@ -6,8 +6,18 @@ import scala.collection.mutable
 object Collections {
 
   //--------------------------------------------------------------------------------------------------------------------
+
   val (m, n) = (2, 2)
   Array.ofDim[Boolean](m, n)
+
+  //--------------------------------------------------------------------------------------------------------------------
+
+  val listBuffer = mutable.ListBuffer.empty[Int] // LinkedList
+  listBuffer.append(1)
+  listBuffer.prepend(1)
+  listBuffer.toList
+
+  //--------------------------------------------------------------------------------------------------------------------
 
   // Builder = Growable
   val arrayBuilder = mutable.ArrayBuilder.make[Int]
