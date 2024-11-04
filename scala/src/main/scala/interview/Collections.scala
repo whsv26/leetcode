@@ -5,6 +5,10 @@ import scala.collection.mutable
 
 object Collections {
 
+  //--------------------------------------------------------------------------------------------------------------------
+  val (m, n) = (2, 2)
+  Array.ofDim[Boolean](m, n)
+
   // Builder = Growable
   val arrayBuilder = mutable.ArrayBuilder.make[Int]
   arrayBuilder.addOne(1)
