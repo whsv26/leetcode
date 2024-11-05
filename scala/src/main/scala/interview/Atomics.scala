@@ -3,32 +3,29 @@ package interview
 
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
 
-object Atomics {
-  object Reference {
-    case class State(counter: Int)
+object Reference extends App {
 
-    val atomicRef = new AtomicReference[State](State(0))
+  case class State(counter: Int)
 
-    atomicRef.set(State(100))
-    atomicRef.getAndSet(State(0)) // return old state: State(100)
+  val atomicRef = new AtomicReference[State](State(0))
 
-    atomicRef.updateAndGet { currentState =>
-      val updatedState = currentState.copy(currentState.counter - 1)
-      updatedState
-    } // return new state
+  atomicRef.set(State(100))
+  atomicRef.getAndSet(State(0)) // return old state: State(100)
 
-    atomicRef.getAndUpdate { currentState =>
-      val updatedState = currentState.copy(currentState.counter - 1)
-      updatedState
-    } // return old state
+  atomicRef.updateAndGet { currentState =>
+    val updatedState = currentState.copy(currentState.counter - 1)
+    updatedState
+  } // return new state
+
+  atomicRef.getAndUpdate { currentState =>
+    val updatedState = currentState.copy(currentState.counter - 1)
+    updatedState
+  } // return old state
+}
+
+object Boolean extends App {
+  val isInitialized = new AtomicBoolean(false)
+  if (isInitialized.compareAndSet(false, true)) {
+    println("initializing")
   }
-
-  object Boolean {
-    val isInitialized = new AtomicBoolean(false)
-    if (isInitialized.compareAndSet(false, true)) {
-      println("initializing")
-    }
-
-  }
-
 }
