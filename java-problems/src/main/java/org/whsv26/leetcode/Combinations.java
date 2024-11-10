@@ -7,41 +7,91 @@ import java.util.Stack;
 public class Combinations {
 
     public static void main(String[] args) {
-        var solutions = new Solution();
-        var actual = solutions.combine(4, 2);
-        var expected = List.of(
-            List.of(1, 2),
-            List.of(1, 3),
-            List.of(1, 4),
-            List.of(2, 3),
-            List.of(2, 4),
-            List.of(3, 4)
+        assert(
+            Combinator.of(4, 2)
+                .combine()
+                .equals(List.of(
+                    List.of(1, 2),
+                    List.of(1, 3),
+                    List.of(1, 4),
+                    List.of(2, 3),
+                    List.of(2, 4),
+                    List.of(3, 4)
+                ))
         );
-        assert expected.equals(actual);
+
+        assert(
+            FullCombinator.of(3, 3)
+                .combineAll()
+                .equals(List.of(
+                    List.of(1),
+                    List.of(1, 2),
+                    List.of(1, 2, 3),
+                    List.of(1, 3),
+                    List.of(2),
+                    List.of(2, 3),
+                    List.of(3)
+                ))
+        );
     }
 
     static class Solution {
         public List<List<Integer>> combine(int n, int k) {
-            List<List<Integer>> res = new ArrayList<>();
-            loop(new Stack<>(), 0, n, k, res);
-            return res;
+            return Combinator.of(n, k).combine();
+        }
+    }
+
+    record Combinator(int to, int k, Stack<Integer> combination, List<List<Integer>> combinations) {
+
+        public List<List<Integer>> combine() {
+            loop(0);
+            return combinations;
         }
 
-        private void loop(Stack<Integer> stack, int from, int to, int k, List<List<Integer>> res) {
-            if (stack.size() == k) {
-                res.add(stack.stream().toList());
+        private void loop(int from) {
+            if (combination.size() == k) {
+                combinations.add(combination.stream().toList());
                 return;
             }
 
             for (int i = from; i < to; i++) {
                 var available = to - i;
-                var requested = k - stack.size();
+                var requested = k - combination.size();
                 if (requested <= available) {
-                    stack.push(i + 1);
-                    loop(stack, i + 1, to, k, res);
-                    stack.pop();
+                    combination.push(i + 1);
+                    loop(i + 1);
+                    combination.pop();
                 }
             }
+        }
+
+        public static Combinator of(int n, int k) {
+            return new Combinator(n, k, new Stack<>(), new ArrayList<>());
+        }
+    }
+
+    record FullCombinator(int to, int k, Stack<Integer> combination, List<List<Integer>> combinations) {
+
+        public List<List<Integer>> combineAll() {
+            loop(0);
+            return combinations;
+        }
+
+        private void loop(int from) {
+            if (combination.size() == k) {
+                return;
+            }
+
+            for (int i = from; i < to; i++) {
+                combination.push(i + 1);
+                combinations.add(combination.stream().toList());
+                loop(i + 1);
+                combination.pop();
+            }
+        }
+
+        public static FullCombinator of(int n, int k) {
+            return new FullCombinator(n, k, new Stack<>(), new ArrayList<>());
         }
     }
 }
