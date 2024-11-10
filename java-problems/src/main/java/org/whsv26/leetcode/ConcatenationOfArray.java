@@ -1,8 +1,9 @@
-package org.whsv26.leetcode.array;
+package org.whsv26.leetcode;
 
 import java.util.Arrays;
 
 public class ConcatenationOfArray {
+
     public static void main(String[] args) {
         var solutions = new Solution();
         assert (Arrays.equals(

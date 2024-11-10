@@ -1,6 +1,7 @@
-package org.whsv26.leetcode.string;
+package org.whsv26.leetcode;
 
 public class FinalValueOfVariableAfterPerformingOperations {
+
     public static void main(String[] args) {
         var solutions = new Solution();
         assert (1 == solutions.finalValueAfterOperations(new String[]{"--X", "X++", "++X"}));

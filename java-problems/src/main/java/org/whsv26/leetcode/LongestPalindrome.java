@@ -1,8 +1,9 @@
-package org.whsv26.leetcode.string;
+package org.whsv26.leetcode;
 
 import java.util.HashMap;
 
 public class LongestPalindrome {
+
     public static void main(String[] args) {
         var solutions = new Solution();
         assert (11 == solutions.longestPalindrome("aaabbbccddee"));

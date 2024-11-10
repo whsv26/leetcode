@@ -1,6 +1,7 @@
-package org.whsv26.leetcode.string;
+package org.whsv26.leetcode;
 
 public class ScoreOfAString {
+
     public static void main(String[] args) {
         var solutions = new Solution();
         assert (13 == solutions.scoreOfString("hello"));
