@@ -1,4 +1,4 @@
-package org.whsv26.leetcode.string;
+package org.whsv26.leetcode.array;
 
 import java.util.Arrays;
 
