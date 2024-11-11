@@ -44,11 +44,11 @@ public class Combinations {
     record Combinator(int to, int k, Stack<Integer> combination, List<List<Integer>> combinations) {
 
         public List<List<Integer>> combine() {
-            loop(0);
+            backtrack(0);
             return combinations;
         }
 
-        private void loop(int from) {
+        private void backtrack(int from) {
             if (combination.size() == k) {
                 combinations.add(combination.stream().toList());
                 return;
@@ -59,7 +59,7 @@ public class Combinations {
                 var requested = k - combination.size();
                 if (requested <= available) {
                     combination.push(i + 1);
-                    loop(i + 1);
+                    backtrack(i + 1);
                     combination.pop();
                 }
             }
@@ -73,11 +73,11 @@ public class Combinations {
     record FullCombinator(int to, int k, Stack<Integer> combination, List<List<Integer>> combinations) {
 
         public List<List<Integer>> combineAll() {
-            loop(0);
+            backtrack(0);
             return combinations;
         }
 
-        private void loop(int from) {
+        private void backtrack(int from) {
             if (combination.size() == k) {
                 return;
             }
@@ -85,7 +85,7 @@ public class Combinations {
             for (int i = from; i < to; i++) {
                 combination.push(i + 1);
                 combinations.add(combination.stream().toList());
-                loop(i + 1);
+                backtrack(i + 1);
                 combination.pop();
             }
         }
