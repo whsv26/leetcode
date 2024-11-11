@@ -38,7 +38,9 @@ public class SubsetsII {
             }
 
             for (int i = start; i < nums.length; i++) {
-                if (i > start && nums[i] == nums[i - 1]) continue;
+                if (i > start && nums[i] == nums[i - 1]) {
+                    continue;
+                }
                 subset.push(nums[i]);
                 subsets.add(subset.stream().toList());
                 backtrack(i + 1, nums, subsets, subset);
